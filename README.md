@@ -44,8 +44,9 @@ docker compose up -d --wait postgres
 Set the PostgreSQL database name, username, password, and host port in the
 root `.env` file. Compose intentionally requires these values instead of
 providing credentials in the repository. The backend reads
-`BETBOT_DATABASE_URL` from `backend/.env`; shell environment variables with the
-same `BETBOT_` prefix take precedence.
+`BETBOT_*` values from `backend/.env`; shell environment variables with the
+same prefix take precedence. Use the root `.env` values to construct
+`BETBOT_DATABASE_URL` in `backend/.env`; the database password must match.
 
 Check the service health with:
 
@@ -63,12 +64,14 @@ never contain production credentials in committed files.
 ### Backend
 
 The backend uses `uv` for dependency management and exposes a minimal FastAPI
-application while the domain features are implemented incrementally.
+application while the domain features are implemented incrementally. Copy
+`backend/.env.example` before starting it; `BETBOT_DATABASE_URL` is required
+and startup fails with a validation error when it is absent or empty.
 
 ```bash
 cd backend
 uv sync --group dev
-uv run uvicorn app.main:app --reload
+uv run python -m app.main
 ```
 
 The API health endpoint is available at
@@ -82,8 +85,20 @@ uv run ruff format --check .
 uv run mypy
 ```
 
-Configuration is loaded from `BETBOT_*` environment variables or an optional
-`backend/.env` file. No credentials are committed to the repository.
+Configuration is loaded from `BETBOT_*` environment variables or
+`backend/.env`. Shell values override the file:
+
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `BETBOT_DATABASE_URL` | Yes | Async PostgreSQL connection URL. |
+| `BETBOT_APP_ENV` | No | Runtime environment: `development`, `test`, or `production`; defaults to `development`. |
+| `BETBOT_APP_HOST` | No | API bind host; defaults to `127.0.0.1`. |
+| `BETBOT_APP_PORT` | No | API bind port from 1 through 65535; defaults to `8000`. |
+| `BETBOT_DEBUG` | No | Enables backend debug mode outside production; defaults to `false`. |
+
+Discord and OAuth variables are not required until those integrations exist.
+When introduced, they belong only in backend configuration and must never use
+the `NEXT_PUBLIC_` prefix. No credentials are committed to the repository.
 
 ### Frontend
 
@@ -105,6 +120,9 @@ npx tsc --noEmit
 npm run build
 ```
 
-Browser API requests will use `NEXT_PUBLIC_API_BASE_URL`, documented in
+Browser API requests use `NEXT_PUBLIC_API_BASE_URL`, documented in
 `frontend/.env.example`, and default to `http://localhost:8000` for local
-development. The current shell does not yet implement product functionality.
+development. Only `NEXT_PUBLIC_*` values may be exposed to the browser; never
+put backend, Discord, OAuth, database, or other secret values in
+`frontend/.env.local`. The current shell does not yet implement product
+functionality.

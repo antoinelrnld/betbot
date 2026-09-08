@@ -11,5 +11,7 @@ npm ci
 npm run dev
 ```
 
-Set `NEXT_PUBLIC_API_BASE_URL` when the backend is not running at its local
-default. See `.env.example` for the supported configuration.
+Set `NEXT_PUBLIC_API_BASE_URL` in `.env.local` when the backend is not running
+at its local default. Variables prefixed with `NEXT_PUBLIC_` are embedded in
+browser code, so this file must never contain backend, Discord, OAuth, or other
+secret values. See `.env.example` for the supported public configuration.
