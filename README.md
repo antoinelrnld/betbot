@@ -63,3 +63,27 @@ uv run mypy
 
 Configuration is loaded from `BETBOT_*` environment variables or an optional
 `backend/.env` file. No credentials are committed to the repository.
+
+### Frontend
+
+The frontend uses Next.js App Router, TypeScript, and Tailwind CSS.
+
+```bash
+cd frontend
+npm ci
+npm run dev
+```
+
+The initial web shell is available at
+[`http://127.0.0.1:3000`](http://127.0.0.1:3000). Frontend validation can be
+run with:
+
+```bash
+npm run lint
+npx tsc --noEmit
+npm run build
+```
+
+Browser API requests will use `NEXT_PUBLIC_API_BASE_URL`, documented in
+`frontend/.env.example`, and default to `http://localhost:8000` for local
+development. The current shell does not yet implement product functionality.
