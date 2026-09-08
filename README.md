@@ -38,3 +38,28 @@ docker compose up -d postgres
 ```
 
 The PostgreSQL connection settings can be overridden with `POSTGRES_*` environment variables.
+
+### Backend
+
+The backend uses `uv` for dependency management and exposes a minimal FastAPI
+application while the domain features are implemented incrementally.
+
+```bash
+cd backend
+uv sync --group dev
+uv run uvicorn app.main:app --reload
+```
+
+The API health endpoint is available at
+[`http://127.0.0.1:8000/health`](http://127.0.0.1:8000/health). Backend checks
+can be run with:
+
+```bash
+uv run pytest
+uv run ruff check .
+uv run ruff format --check .
+uv run mypy
+```
+
+Configuration is loaded from `BETBOT_*` environment variables or an optional
+`backend/.env` file. No credentials are committed to the repository.
