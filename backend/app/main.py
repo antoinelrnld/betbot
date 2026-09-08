@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 
 from app.api.health import router as health_router
@@ -16,3 +17,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
 
 app = create_app()
+
+
+def run() -> None:
+    """Run the API server using the configured network address."""
+    settings = get_settings()
+    uvicorn.run(app, host=settings.app_host, port=settings.app_port)
+
+
+if __name__ == "__main__":
+    run()
