@@ -1,8 +1,8 @@
 from functools import lru_cache
 from pathlib import Path
-from typing import Literal
+from typing import Literal, Self
 
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy.engine import make_url
 from sqlalchemy.exc import ArgumentError
@@ -55,6 +55,13 @@ class Settings(BaseSettings):
             raise ValueError("must be a complete postgresql+asyncpg connection URL")
 
         return value
+
+    @model_validator(mode="after")
+    def validate_debug_mode(self) -> Self:
+        """Prevent verbose exception responses in production."""
+        if self.app_env == "production" and self.debug:
+            raise ValueError("debug mode cannot be enabled in production")
+        return self
 
 
 @lru_cache

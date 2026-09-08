@@ -77,6 +77,20 @@ def test_settings_reject_blank_application_host(monkeypatch: MonkeyPatch) -> Non
         Settings(_env_file=None)
 
 
+def test_settings_reject_debug_mode_in_production(
+    monkeypatch: MonkeyPatch,
+) -> None:
+    monkeypatch.setenv(
+        "BETBOT_DATABASE_URL",
+        "postgresql+asyncpg://betbot:test@localhost:5432/test",
+    )
+    monkeypatch.setenv("BETBOT_APP_ENV", "production")
+    monkeypatch.setenv("BETBOT_DEBUG", "true")
+
+    with pytest.raises(ValidationError, match="debug mode cannot be enabled"):
+        Settings(_env_file=None)
+
+
 def test_settings_reject_invalid_database_url(monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setenv("BETBOT_DATABASE_URL", "not-a-database-url")
 

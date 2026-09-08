@@ -94,7 +94,7 @@ Configuration is loaded from `BETBOT_*` environment variables or
 | `BETBOT_APP_ENV` | No | Runtime environment: `development`, `test`, or `production`; defaults to `development`. |
 | `BETBOT_APP_HOST` | No | API bind host; defaults to `127.0.0.1`. |
 | `BETBOT_APP_PORT` | No | API bind port from 1 through 65535; defaults to `8000`. |
-| `BETBOT_DEBUG` | No | Enables backend debug mode; defaults to `false`. |
+| `BETBOT_DEBUG` | No | Enables backend debug mode outside production; defaults to `false`. |
 
 Discord and OAuth variables are not required until those integrations exist.
 When introduced, they belong only in backend configuration and must never use
