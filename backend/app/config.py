@@ -27,6 +27,15 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
+    @field_validator("app_host")
+    @classmethod
+    def validate_app_host(cls, value: str) -> str:
+        """Reject empty bind addresses before starting the server."""
+        normalized_value = value.strip()
+        if not normalized_value:
+            raise ValueError("must not be blank")
+        return normalized_value
+
     @field_validator("database_url")
     @classmethod
     def validate_database_url(cls, value: str) -> str:

@@ -66,6 +66,17 @@ def test_settings_reject_invalid_application_port(monkeypatch: MonkeyPatch) -> N
         Settings(_env_file=None)
 
 
+def test_settings_reject_blank_application_host(monkeypatch: MonkeyPatch) -> None:
+    monkeypatch.setenv(
+        "BETBOT_DATABASE_URL",
+        "postgresql+asyncpg://betbot:test@localhost:5432/test",
+    )
+    monkeypatch.setenv("BETBOT_APP_HOST", "   ")
+
+    with pytest.raises(ValidationError, match="app_host"):
+        Settings(_env_file=None)
+
+
 def test_settings_reject_invalid_database_url(monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setenv("BETBOT_DATABASE_URL", "not-a-database-url")
 
