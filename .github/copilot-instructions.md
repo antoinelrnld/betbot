@@ -504,9 +504,39 @@ If an issue exposes a separate problem, mention it separately.
 
 ---
 
+# Commit and Branch Conventions
+
+## 22. Follow Conventional Commits
+
+Commit messages must follow the Conventional Commits format:
+
+```text
+<type>[optional scope]: <description>
+```
+
+Use a valid type such as `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `build`, or `ci`. Keep the description concise and imperative. Use a body and footers when additional context or breaking changes need to be documented, and mark breaking changes with `!` after the type or scope and/or a `BREAKING CHANGE:` footer.
+
+Branch names must use the same type prefixes and a short kebab-case description:
+
+```text
+<type>/<short-description>
+```
+
+For example: `feat/add-event-settlement` and `fix/prevent-negative-balance`. Do not use vague branch names such as `work`, `changes`, or `update`.
+
+Pull request titles must follow the same Conventional Commits format as commit messages:
+
+```text
+<type>[optional scope]: <description>
+```
+
+Use the same valid types, concise imperative descriptions, and breaking-change notation for pull request titles.
+
+---
+
 # Documentation
 
-## 22. Keep documentation synchronized
+## 23. Keep documentation synchronized
 
 When a change intentionally modifies established product behavior, update the relevant documentation.
 
