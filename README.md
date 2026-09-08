@@ -31,13 +31,34 @@ Technical architecture and implementation direction are documented in:
 
 ## Local development
 
-Local development will use Docker Compose for shared infrastructure. The current Compose configuration starts PostgreSQL only; backend, frontend, Discord, and worker processes are not implemented yet.
+Local development uses Docker Compose for shared infrastructure. PostgreSQL is
+the authoritative persistence service; backend, frontend, Discord, and worker
+processes are not implemented yet.
 
 ```bash
-docker compose up -d postgres
+cp .env.example .env
+cp backend/.env.example backend/.env
+docker compose up -d --wait postgres
 ```
 
-The PostgreSQL connection settings can be overridden with `POSTGRES_*` environment variables.
+Set the PostgreSQL database name, username, password, and host port in the
+root `.env` file. Compose intentionally requires these values instead of
+providing credentials in the repository. The backend reads
+`BETBOT_DATABASE_URL` from `backend/.env`; shell environment variables with the
+same `BETBOT_` prefix take precedence.
+
+Check the service health with:
+
+```bash
+docker compose ps
+docker compose exec postgres sh -c 'pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"'
+```
+
+PostgreSQL data is stored in the named `postgres-data` volume and survives
+container restarts. Stop the service without deleting data with
+`docker compose down`; use `docker compose down -v` only when intentionally
+discarding the local database. The `.env` files are ignored by Git and must
+never contain production credentials in committed files.
 
 ### Backend
 
