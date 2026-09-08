@@ -25,6 +25,7 @@ class Settings(BaseSettings):
         env_file=BACKEND_DIR / ".env",
         env_file_encoding="utf-8",
         extra="ignore",
+        frozen=True,
     )
 
     @field_validator("app_host")

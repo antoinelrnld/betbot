@@ -91,6 +91,16 @@ def test_settings_reject_debug_mode_in_production(
         Settings(_env_file=None)
 
 
+def test_settings_cannot_be_modified_after_validation() -> None:
+    settings = Settings(
+        database_url="postgresql+asyncpg://betbot:test@localhost:5432/test",
+        app_env="production",
+    )
+
+    with pytest.raises(ValidationError, match="frozen_instance"):
+        settings.__setattr__("debug", True)
+
+
 def test_settings_reject_invalid_database_url(monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setenv("BETBOT_DATABASE_URL", "not-a-database-url")
 
