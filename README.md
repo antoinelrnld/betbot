@@ -31,6 +31,15 @@ Technical architecture and implementation direction are documented in:
 
 ## Local development
 
+### Prerequisites
+
+Install the following tools before starting local development:
+
+- Git
+- Docker with Docker Compose
+- `uv` for backend dependencies
+- Node.js 22 or later and npm for the frontend
+
 Local development uses Docker Compose for shared infrastructure. PostgreSQL is
 the authoritative persistence service; backend, frontend, Discord, and worker
 processes are not implemented yet.
