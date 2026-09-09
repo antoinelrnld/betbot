@@ -5,6 +5,8 @@ from app.config import Settings
 from pydantic import ValidationError
 from pytest import MonkeyPatch
 
+pytestmark = pytest.mark.unit
+
 
 def test_settings_use_environment_prefix(monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setenv("BETBOT_APP_ENV", "test")

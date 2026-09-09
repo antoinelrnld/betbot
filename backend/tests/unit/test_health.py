@@ -1,12 +1,13 @@
+import pytest
 from app.config import Settings
 from app.main import create_app
 from fastapi.testclient import TestClient
 
+pytestmark = pytest.mark.unit
 
-def test_health_endpoint_reports_running_application() -> None:
-    client = TestClient(create_app())
 
-    response = client.get("/health")
+def test_health_endpoint_reports_running_application(test_client: TestClient) -> None:
+    response = test_client.get("/health")
 
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
