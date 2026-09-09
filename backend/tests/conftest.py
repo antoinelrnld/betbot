@@ -1,4 +1,5 @@
 import os
+from collections.abc import Iterator
 
 import pytest
 from app.config import Settings
@@ -42,9 +43,10 @@ def test_settings() -> Settings:
 
 
 @pytest.fixture
-def test_client(test_settings: Settings) -> TestClient:
+def test_client(test_settings: Settings) -> Iterator[TestClient]:
     """Create a client for the application configured for tests."""
     from app.main import create_app
 
     application: FastAPI = create_app(test_settings)
-    return TestClient(application)
+    with TestClient(application) as client:
+        yield client

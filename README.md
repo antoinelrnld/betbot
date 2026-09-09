@@ -74,9 +74,15 @@ uv sync --group dev
 uv run python -m app.main
 ```
 
-The API health endpoint is available at
-[`http://127.0.0.1:8000/health`](http://127.0.0.1:8000/health). Backend checks
-can be run with:
+The API exposes two machine-readable operational endpoints:
+
+- [`/health`](http://127.0.0.1:8000/health) is a liveness check. It reports
+  whether the API process is running and does not require PostgreSQL.
+- [`/ready`](http://127.0.0.1:8000/ready) is a readiness check. It verifies
+  PostgreSQL connectivity and returns HTTP 503 when the API cannot serve
+  database-backed requests.
+
+Backend checks can be run with:
 
 ```bash
 uv run pytest
