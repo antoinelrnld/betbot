@@ -93,6 +93,14 @@ Backend tests are organized into `backend/tests/unit/` and
 or `uv run pytest -m integration`; all test configuration uses isolated test
 values and does not require production credentials or a developer `.env` file.
 
+The `Quality` GitHub Actions workflow runs on pull requests, pushes to `main`,
+and manual dispatch. Its backend job runs locked dependency installation,
+Ruff formatting and lint checks, mypy, and pytest. Its frontend job runs
+locked npm installation, Vitest, Prettier, ESLint, TypeScript checking, and
+the Next.js production build. These jobs require no production secrets or
+database service; the current integration tests use isolated in-process
+configuration.
+
 Configuration is loaded from `BETBOT_*` environment variables or
 `backend/.env`. Shell values override the file:
 
