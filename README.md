@@ -85,6 +85,9 @@ uv run ruff format --check .
 uv run mypy
 ```
 
+These commands use the checked-in `uv.lock`, so running `uv sync --group dev`
+installs the same tool versions locally as CI.
+
 Configuration is loaded from `BETBOT_*` environment variables or
 `backend/.env`. Shell values override the file:
 
@@ -116,9 +119,14 @@ run with:
 
 ```bash
 npm run lint
-npx tsc --noEmit
+npm run typecheck
+npm run format:check
 npm run build
 ```
+
+Apply the frontend formatter with `npm run format`. The `package-lock.json`
+file is authoritative for frontend tool versions; use `npm ci` for a clean,
+reproducible installation.
 
 Browser API requests use `NEXT_PUBLIC_API_BASE_URL`, documented in
 `frontend/.env.example`, and default to `http://localhost:8000` for local
