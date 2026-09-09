@@ -88,6 +88,11 @@ uv run mypy
 These commands use the checked-in `uv.lock`, so running `uv sync --group dev`
 installs the same tool versions locally as CI.
 
+Backend tests are organized into `backend/tests/unit/` and
+`backend/tests/integration/`. Run only one scope with `uv run pytest -m unit`
+or `uv run pytest -m integration`; all test configuration uses isolated test
+values and does not require production credentials or a developer `.env` file.
+
 Configuration is loaded from `BETBOT_*` environment variables or
 `backend/.env`. Shell values override the file:
 
@@ -120,6 +125,7 @@ run with:
 ```bash
 npm run lint
 npm run typecheck
+npm test
 npm run format:check
 npm run build
 ```
@@ -134,3 +140,7 @@ development. Only `NEXT_PUBLIC_*` values may be exposed to the browser; never
 put backend, Discord, OAuth, database, or other secret values in
 `frontend/.env.local`. The current shell does not yet implement product
 functionality.
+
+Frontend behavior tests use Vitest and React Testing Library. Run them with
+`npm test`, or use `npm run test:watch` during development. Tests run in a
+browser-like jsdom environment and use no production credentials.

@@ -31,6 +31,10 @@ packages = ["app"]
 [tool.pytest.ini_options]
 addopts = ["--strict-config", "--strict-markers"]
 testpaths = ["tests"]
+markers = [
+    "unit: tests isolated application behavior",
+    "integration: tests spanning application boundaries",
+]
 
 [tool.ruff]
 line-length = 88

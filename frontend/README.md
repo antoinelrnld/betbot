@@ -17,10 +17,16 @@ npm run dev
 npm run format:check
 npm run lint
 npm run typecheck
+npm test
 npm run build
 ```
 
 Run `npm run format` to apply the frontend formatter.
+
+Behavior tests live in `frontend/tests/` and use Vitest with React Testing
+Library. `npm test` runs the suite once for CI; `npm run test:watch` keeps it
+running during development. Tests use jsdom and do not require production
+credentials.
 
 Set `NEXT_PUBLIC_API_BASE_URL` in `.env.local` when the backend is not running
 at its local default. Variables prefixed with `NEXT_PUBLIC_` are embedded in
